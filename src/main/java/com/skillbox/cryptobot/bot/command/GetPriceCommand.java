@@ -1,6 +1,6 @@
 package com.skillbox.cryptobot.bot.command;
 
-import com.skillbox.cryptobot.service.CryptoCurrencyService;
+import com.skillbox.cryptobot.service.impl.CryptoCurrencyServiceImpl;
 import com.skillbox.cryptobot.utils.TextUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 @AllArgsConstructor
 public class GetPriceCommand implements IBotCommand {
 
-    private final CryptoCurrencyService service;
+    private final CryptoCurrencyServiceImpl service;
 
     @Override
     public String getCommandIdentifier() {

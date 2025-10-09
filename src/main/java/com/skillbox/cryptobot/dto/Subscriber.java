@@ -25,4 +25,8 @@ public class Subscriber {
         this.telegramId = telegramId;
         this.subscribePrice = null;
     }
+    public Subscriber(Long telegramId, Double subscribePrice) {
+        this.telegramId = telegramId;
+        this.subscribePrice = subscribePrice;
+    }
 }
