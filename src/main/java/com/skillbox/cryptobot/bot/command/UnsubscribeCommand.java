@@ -1,11 +1,18 @@
 package com.skillbox.cryptobot.bot.command;
 
+import com.skillbox.cryptobot.dto.Subscriber;
+import com.skillbox.cryptobot.repositories.SubscriberRepository;
+import com.skillbox.cryptobot.service.impl.SubscribeServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.Optional;
 
 /**
  * Обработка команды отмены подписки на курс валюты
@@ -15,6 +22,8 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 @AllArgsConstructor
 public class UnsubscribeCommand implements IBotCommand {
 
+    private final SubscribeServiceImpl subscribeService;
+    private final SubscriberRepository repository;
 
     @Override
     public String getCommandIdentifier() {
@@ -28,6 +37,25 @@ public class UnsubscribeCommand implements IBotCommand {
 
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
+        long telegramId = message.getFrom().getId();
+        SendMessage answer = new SendMessage();
+        Optional<Subscriber> existingSubscriber = repository.findByTelegramId(telegramId);
+        Subscriber subscriber = existingSubscriber.get();
 
+        if(subscriber.getSubscribePrice() != null) {
+            subscribeService.unsubscribeSubscription(telegramId);
+            answer.setText("Подписка отменена");
+            sendMessage(answer, absSender);
+        } else {
+            answer.setText("Активные подписки отсутствуют");
+            sendMessage(answer, absSender);
+        }
+    }
+    private void sendMessage(SendMessage answer, AbsSender absSender) {
+        try {
+            absSender.execute(answer);
+        } catch (TelegramApiException e) {
+            log.error("Ошибка при отправке сообщения", e);
+        }
     }
 }

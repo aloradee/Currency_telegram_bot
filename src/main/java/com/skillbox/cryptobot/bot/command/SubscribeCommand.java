@@ -13,7 +13,6 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
-import java.util.UUID;
 
 /**
  * Обработка команды подписки на курс валюты

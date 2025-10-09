@@ -49,4 +49,17 @@ public class SubscribeServiceImpl implements SubscribeService {
         log.info("Новый подписчик создан с telegramId {}", telegramId);
     }
 
+    @Override
+    public void unsubscribeSubscription(Long telegramId) {
+        Optional<Subscriber> existingSubscriber = subscribeRepository.findByTelegramId(telegramId);
+        Subscriber subscriber;
+        if(existingSubscriber.isPresent()) {
+            subscriber = existingSubscriber.get();
+            subscriber.setSubscribePrice(null);
+            log.info("Подписка пользователя с telegramId {} отменена", telegramId);
+            subscribeRepository.save(subscriber);
+        } else {
+            log.error("Пользователя с telegramId {} не существует", telegramId);
+        }
+    }
 }
