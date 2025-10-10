@@ -5,6 +5,7 @@ import com.skillbox.cryptobot.config.NotificationConfig;
 import com.skillbox.cryptobot.dto.Subscriber;
 import com.skillbox.cryptobot.repositories.SubscriberRepository;
 import com.skillbox.cryptobot.service.CryprtoCurrencyService;
+import com.skillbox.cryptobot.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +22,7 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class NotificationServiceImpl {
+public class NotificationServiceImpl implements NotificationService {
 
     private final CryptoBot cryptoBot;
     private final CryprtoCurrencyService cryprtoCurrencyService;
