@@ -21,9 +21,17 @@ public class CryptoCurrencyServiceImpl implements CryprtoCurrencyService {
 
     @Override
     public double getBitcoinPrice() throws IOException {
-        if (price.get() == null) {
-            price.set(client.getBitcoinPrice());
+        try {
+            double currentPrice = client.getBitcoinPrice();
+            price.set(currentPrice);
+            return currentPrice;
+        } catch (IOException e) {
+            Double cachedPrice = price.get();
+            if(cachedPrice != null) {
+                log.warn("Не удалось получить актуальную цену, возвращаем кешированную");
+                return cachedPrice;
+            }
+            throw e;
         }
-        return price.get();
     }
 }

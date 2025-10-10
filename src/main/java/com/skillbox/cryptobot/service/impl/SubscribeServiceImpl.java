@@ -18,6 +18,7 @@ public class SubscribeServiceImpl implements SubscribeService {
     private final SubscriberRepository subscribeRepository;
 
     @Override
+    @Transactional
     public void createOrUpdateSubscription(Long telegramId, Double priceSubscription) {
 
         Optional<Subscriber> existingSubscriber = subscribeRepository.findByTelegramId(telegramId);
@@ -50,6 +51,7 @@ public class SubscribeServiceImpl implements SubscribeService {
     }
 
     @Override
+    @Transactional
     public void unsubscribeSubscription(Long telegramId) {
         Optional<Subscriber> existingSubscriber = subscribeRepository.findByTelegramId(telegramId);
         Subscriber subscriber;

@@ -39,17 +39,14 @@ public class GetSubscriptionCommand implements IBotCommand {
         if(existingSubscriber.isPresent()) {
             subscriber = existingSubscriber.get();
             if(subscriber.getSubscribePrice() != null) {
-                answer.setText("Вы подписаны на стоимость биткоина " + subscriber.getSubscribePrice() + "USD");
-                sendMessage(answer, absSender);
+                answer.setText("Вы подписаны на стоимость биткоина " + subscriber.getSubscribePrice() + " USD");
             } else {
                 answer.setText("Активные подписки отсутствуют");
-                sendMessage(answer, absSender);
             }
         } else {
-            log.error("Пользователь с telegramId {} не найден", telegramId);
+            answer.setText("Активные подписки отсутствуют");
         }
-
-
+        sendMessage(answer, absSender);
     }
 
     private void sendMessage(SendMessage answer, AbsSender absSender) {
