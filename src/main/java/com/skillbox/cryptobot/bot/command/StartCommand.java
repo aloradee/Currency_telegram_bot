@@ -49,10 +49,14 @@ public class StartCommand implements IBotCommand {
 
         subscribeService.createUserSubscription(userId);
 
+        sendMessage(answer, absSender);
+    }
+
+    private void sendMessage(SendMessage answer, AbsSender absSender) {
         try {
             absSender.execute(answer);
         } catch (TelegramApiException e) {
-            log.error("Error occurred in /start command", e);
+            log.error("Ошибка отправки сообщения пользователю {}", answer.getChatId(), e);
         }
     }
 }

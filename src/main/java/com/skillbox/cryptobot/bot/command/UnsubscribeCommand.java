@@ -39,19 +39,14 @@ public class UnsubscribeCommand implements IBotCommand {
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
         long telegramId = message.getFrom().getId();
         SendMessage answer = new SendMessage();
-        Optional<Subscriber> existingSubscriber = repository.findByTelegramId(telegramId);
+        answer.setChatId(message.getChatId().toString());
 
-        if (existingSubscriber.isPresent()) {
-            Subscriber subscriber = existingSubscriber.get();
-
-            if (subscriber.getSubscribePrice() != null) {
-                subscribeService.unsubscribeSubscription(telegramId);
-                answer.setText("Подписка отменена");
-            } else {
-                answer.setText("Активные подписки отсутствуют");
-            }
-        } else {
+        try {
+            subscribeService.unsubscribeSubscription(telegramId);
+            answer.setText("Подписка отменена");
+        } catch (Exception e) {
             answer.setText("Активные подписки отсутствуют");
+            log.warn("Попытка отмены несуществующей подписки для пользователя {}", telegramId);
         }
         sendMessage(answer, absSender);
     }
@@ -59,7 +54,7 @@ public class UnsubscribeCommand implements IBotCommand {
         try {
             absSender.execute(answer);
         } catch (TelegramApiException e) {
-            log.error("Ошибка при отправке сообщения", e);
+            log.error("Ошибка отправки сообщения пользователю {}", answer.getChatId(), e);
         }
     }
 }

@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface SubscriberRepository extends JpaRepository<Subscriber, UUID> {
     Optional<Subscriber> findByTelegramId(Long telegramId);
     boolean existsByTelegramId(Long telegramId);
-    @Query("SELECT s FROM Subscriber s WHERE s.subscriptionPrice > :currentPrice AND s.subscriptionPrice IS NOT NULL")
+    @Query("SELECT s FROM Subscriber s WHERE s.subscribePrice > :currentPrice AND s.subscribePrice IS NOT NULL")
     List<Subscriber> findBySubscriptionPriceGreaterThan(@Param("currentPrice") Double currentPrice);
 }

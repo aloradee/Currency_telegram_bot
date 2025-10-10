@@ -53,7 +53,7 @@ public class GetSubscriptionCommand implements IBotCommand {
         try {
             absSender.execute(answer);
         } catch (TelegramApiException e) {
-            log.error("Ошибка отправки сообщения", e);
+            log.error("Ошибка отправки сообщения пользователю {}", answer.getChatId(), e);
         }
     }
 }

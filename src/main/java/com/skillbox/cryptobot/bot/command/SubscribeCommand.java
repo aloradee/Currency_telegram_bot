@@ -42,7 +42,7 @@ public class SubscribeCommand implements IBotCommand {
         long telegramId = message.getFrom().getId();
         answer.setChatId(message.getChatId());
 
-        if(arguments == null || arguments.length == 0) {
+        if (arguments == null || arguments.length == 0 || arguments[0].trim().isEmpty()) {
             answer.setText("Пожалуйста, укажите цену для подписки. Пример: /subscribe 50000");
             sendMessage(answer, absSender);
             return;
@@ -83,7 +83,7 @@ public class SubscribeCommand implements IBotCommand {
         try {
             absSender.execute(answer);
         } catch (TelegramApiException e) {
-            log.error("Ошибка при отправке сообщения", e);
+            log.error("Ошибка отправки сообщения пользователю {}", answer.getChatId(), e);
         }
     }
 
