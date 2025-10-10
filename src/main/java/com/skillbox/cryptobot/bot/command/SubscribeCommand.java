@@ -14,6 +14,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
 
+import static com.skillbox.cryptobot.utils.TelegramMessageSender.sendMessage;
+
 /**
  * Обработка команды подписки на курс валюты
  */
@@ -77,14 +79,6 @@ public class SubscribeCommand implements IBotCommand {
 
         sendMessage(answer, absSender);
 
-    }
-
-    private void sendMessage(SendMessage answer, AbsSender absSender) {
-        try {
-            absSender.execute(answer);
-        } catch (TelegramApiException e) {
-            log.error("Ошибка отправки сообщения пользователю {}", answer.getChatId(), e);
-        }
     }
 
 }

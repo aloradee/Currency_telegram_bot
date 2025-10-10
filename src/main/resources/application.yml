@@ -9,8 +9,8 @@ binance:
 
 app:
   notification:
-    price-check-interval: 120000
-    min-notification-interval: 600000
+    price-check-interval: 120000    # 2 минуты
+    min-notification-interval: 600000 # 10 минут
 
 spring:
   datasource:

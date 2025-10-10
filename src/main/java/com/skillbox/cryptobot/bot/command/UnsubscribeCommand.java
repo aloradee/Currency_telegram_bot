@@ -14,6 +14,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.Optional;
 
+import static com.skillbox.cryptobot.utils.TelegramMessageSender.sendMessage;
+
 /**
  * Обработка команды отмены подписки на курс валюты
  */
@@ -41,20 +43,14 @@ public class UnsubscribeCommand implements IBotCommand {
         SendMessage answer = new SendMessage();
         answer.setChatId(message.getChatId().toString());
 
-        try {
+        Optional<Subscriber> existingSubscriber = repository.findByTelegramId(telegramId);
+
+        if (existingSubscriber.isPresent() && existingSubscriber.get().getSubscribePrice() != null) {
             subscribeService.unsubscribeSubscription(telegramId);
             answer.setText("Подписка отменена");
-        } catch (Exception e) {
+        } else {
             answer.setText("Активные подписки отсутствуют");
-            log.warn("Попытка отмены несуществующей подписки для пользователя {}", telegramId);
         }
         sendMessage(answer, absSender);
-    }
-    private void sendMessage(SendMessage answer, AbsSender absSender) {
-        try {
-            absSender.execute(answer);
-        } catch (TelegramApiException e) {
-            log.error("Ошибка отправки сообщения пользователю {}", answer.getChatId(), e);
-        }
     }
 }

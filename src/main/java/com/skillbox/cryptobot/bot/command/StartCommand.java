@@ -11,6 +11,8 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import static com.skillbox.cryptobot.utils.TelegramMessageSender.sendMessage;
+
 
 /**
  * Обработка команды начала работы с ботом
@@ -52,11 +54,4 @@ public class StartCommand implements IBotCommand {
         sendMessage(answer, absSender);
     }
 
-    private void sendMessage(SendMessage answer, AbsSender absSender) {
-        try {
-            absSender.execute(answer);
-        } catch (TelegramApiException e) {
-            log.error("Ошибка отправки сообщения пользователю {}", answer.getChatId(), e);
-        }
-    }
 }
